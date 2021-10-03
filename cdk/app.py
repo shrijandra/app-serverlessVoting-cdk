@@ -5,11 +5,6 @@ from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_dynamodb as _ddb
 from aws_cdk import aws_apigateway as _ag
 from aws_cdk import core
-from aws_cdk import aws_ec2 as _ec2
-from aws_cdk import aws_ecs as _ecs
-from aws_cdk import aws_ecs_patterns as _ecs_patterns
-from aws_cdk.aws_ecr import Repository
-from aws_cdk.pipelines import CodeBuildOptions, CodeBuildStep, CodePipeline, CodePipelineSource, ShellStep
 
 
 class VotingApiStack(core.Stack):
