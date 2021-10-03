@@ -1,0 +1,16 @@
+{
+  "name": "voting-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static site frontend interface to voting-api",
+  "main": "index.html",
+  "scripts": {
+      "build":"npx parcel build ./ index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "posthtml-expressions": "^1.9.0"
+  }
+}
