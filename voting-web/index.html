@@ -68,12 +68,11 @@ margin-bottom: 30px;padding: 5px 0px 5px 0px;'>
             vote: function(Vote_ID) {
                 var self = this;
                 console.log(Vote_ID);
+                var payload = {"vote_ID":Vote_ID};
                 axios({
                     method: 'post',
                     url: this.url_api_options,
-                    data: {
-                        vote_ID: Vote_ID
-                    }
+                    data: JSON.stringify(payload)
                 })
                 .then(self.show);
             },
