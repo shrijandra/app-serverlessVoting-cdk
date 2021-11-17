@@ -97,16 +97,17 @@ class VotingApiStack(core.Stack):
                        value=api.url, export_name="{}-apiEndpointURL".format(construct_id))
 
 class VotingApiAppStage(core.Stage):
-    def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: core.Construct, construct_id: str, env = None, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         VotingApiStack(self, "{}-api-pipeline".format(construct_id))
 
 class VotingApiPipelineStack(core.Stack):
 
-    def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: core.Construct, construct_id: str,env = None, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        
         pipeline =  CodePipeline(self, "{}-pipeline".format(construct_id),
                         pipeline_name="{}-pipeline".format(construct_id),
                         synth=ShellStep("Synth",
@@ -115,7 +116,9 @@ class VotingApiPipelineStack(core.Stack):
                                 "python3 -m pip install -r requirements.txt",
                                 "cdk synth"]))
 
-        pipeline.add_stage(VotingApiAppStage(self, "test"))
+        pipeline.add_stage(VotingApiAppStage(self, "test", env=env))
+        pipeline.add_stage(VotingApiAppStage(self, "production", env=env))
+        
 
 
 AWS_ACCOUNT_ID=os.getenv("CDK_DEFAULT_ACCOUNT")
@@ -133,7 +136,10 @@ ENV_NAME="{}-prod".format(STACK_NAME)
 votingapi_prod_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
 core.Tags.of(votingapi_prod_stack).add('Name', STACK_NAME)
 
-votingapi_test_pipeline = VotingApiPipelineStack(app, "{}-pipeline".format(STACK_NAME))
+votingapi_test_pipeline = VotingApiPipelineStack(app, "{}-pipeline".format(STACK_NAME), env={
+                                                                'account': AWS_ACCOUNT_ID,
+                                                                'region' : AWS_REGION
+                                                                })
 
 
 app.synth()
