@@ -5,7 +5,6 @@ from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_dynamodb as _ddb
 from aws_cdk import aws_apigateway as _ag
 from aws_cdk import core
-from aws_cdk.pipelines import CodePipeline, CodePipelineSource, ShellStep
 
 
 
@@ -96,30 +95,6 @@ class VotingApiStack(core.Stack):
         core.CfnOutput(self, "{}-output-apiEndpointURL".format(construct_id),
                        value=api.url, export_name="{}-apiEndpointURL".format(construct_id))
 
-class VotingApiAppStage(core.Stage):
-    def __init__(self, scope: core.Construct, construct_id: str, env = None, **kwargs) -> None:
-        super().__init__(scope, construct_id, **kwargs)
-
-        VotingApiStack(self, "{}-api-pipeline".format(construct_id))
-
-class VotingApiPipelineStack(core.Stack):
-
-    def __init__(self, scope: core.Construct, construct_id: str,env = None, **kwargs) -> None:
-        super().__init__(scope, construct_id, **kwargs)
-
-        
-        pipeline =  CodePipeline(self, "{}-pipeline".format(construct_id),
-                        pipeline_name="{}-pipeline".format(construct_id),
-                        synth=ShellStep("Synth",
-                            input=CodePipelineSource.git_hub("donnieprakoso/app-serverlessVoting-cdk", "main"),
-                            commands=["npm install -g aws-cdk",
-                                "python3 -m pip install -r requirements.txt",
-                                "cdk synth"]))
-
-        pipeline.add_stage(VotingApiAppStage(self, "test", env=env))
-        pipeline.add_stage(VotingApiAppStage(self, "production", env=env))
-        
-
 
 AWS_ACCOUNT_ID=os.getenv("CDK_DEFAULT_ACCOUNT")
 AWS_REGION=os.getenv("CDK_DEFAULT_REGION")
@@ -135,11 +110,5 @@ core.Tags.of(votingapi_staging_stack).add('Name', STACK_NAME)
 ENV_NAME="{}-prod".format(STACK_NAME)
 votingapi_prod_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
 core.Tags.of(votingapi_prod_stack).add('Name', STACK_NAME)
-
-votingapi_test_pipeline = VotingApiPipelineStack(app, "{}-pipeline".format(STACK_NAME), env={
-                                                                'account': AWS_ACCOUNT_ID,
-                                                                'region' : AWS_REGION
-                                                                })
-
 
 app.synth()
