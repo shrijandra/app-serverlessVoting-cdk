@@ -10,11 +10,11 @@
 
 <body>
     <div id='v_app'>
-        <section class="hero is-medium is-info is-bold">
+        <section class="hero is-medium is-warning is-bold">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title is-2">
-                        Hello, 1000 Startup
+                        Hungry Eat What? 
                     </h1>
                     <div class='subtitle is-4'>
                         Hello, I'm a serverless web deployed with AWS Amplify. I'm integrated with serverless APIs running on Amazon API Gateway, AWS Lambda and Amazon DynamoDB.👋🏻🥳
@@ -63,7 +63,7 @@ margin-bottom: 30px;padding: 5px 0px 5px 0px;'>
         el: "#v_app",
         delimiters: ["{%", "%}"],
         data: {
-            url_api_options: '{{ API_URL || '/' }}',
+            url_api_options: '{{ API_URL || '/' }}vote',
             options: [],
             showResult: false,
         },
