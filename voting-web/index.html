@@ -19,14 +19,13 @@
                     <div class='subtitle is-4'>
                         Hello, I'm a serverless web deployed with AWS Amplify. I'm integrated with serverless APIs running on Amazon API Gateway, AWS Lambda and Amazon DynamoDB.👋🏻🥳
                     </div>
+                                                                <button v-on:click="show()" class='button is-warning'><b>Show Results</b></button>
                 </div>
             </div>
         </section>
         <section style='margin-top:40px;'>
             <div class='columns'>
-                <div class='column is-offset-3'>
-                    <div class='columns'>
-                        <div class='column is-4' v-for="opt in options" style='text-align:center;'>
+                        <div class='column is-{% column_count %}' v-for="opt in options" style='text-align:center;'>
                             <div class="card" style='height:100%'>
                                 <div class="card-image">
                                     <img v-bind:src="opt.image" alt="Placeholder image" width="300px">
@@ -36,7 +35,7 @@
                                         <div class='title is-4'>
                                             {% opt.name %}
                                         </div>
-                                        <div v-if="showResult" class='title has-background-link-dark has-text-white-ter' style='width: 50%;text-align: center;
+                                        <div v-if="showResult" class='title is-warning has-background-link-dark has-text-white-ter' style='width: 50%;text-align: center;
 border-radius: 5px;
 margin: auto;
     margin-bottom: auto;
@@ -44,11 +43,9 @@ margin-bottom: 30px;padding: 5px 0px 5px 0px;'>
                                             {% opt.votes %} VOTES
                                         </div>
                                         <div class=''>
-                                            <button v-on:click="vote(opt.VOTE_ID)" class='button is-info'><b>VOTE</b></button>
+                                            <button v-on:click="vote(opt.VOTE_ID)" class='button is-warning'><b>VOTE</b></button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,6 +62,7 @@ margin-bottom: 30px;padding: 5px 0px 5px 0px;'>
         data: {
             url_api_options: '{{ API_URL || '/' }}vote',
             options: [],
+            column_count: 1,
             showResult: false,
         },
         methods: {
@@ -92,6 +90,7 @@ margin-bottom: 30px;padding: 5px 0px 5px 0px;'>
                     if (response.status == 200) {
                         console.log(response.data);
                         self.options = response.data.data;
+                        self.column_count = 12/self.options.length;
                     }
                 });
             }
