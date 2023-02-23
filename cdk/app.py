@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-import os
+from constructs import Construct
+from aws_cdk import App, Stack
 from aws_cdk import aws_iam as _iam
 from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_dynamodb as _ddb
 from aws_cdk import aws_apigateway as _ag
-from aws_cdk import core
+import aws_cdk as core
 
 
-
-class VotingApiStack(core.Stack):
-    def __init__(self, scope: core.Construct, construct_id: str,
+class VotingApiStack(Stack):
+    def __init__(self, scope: Construct, construct_id: str, stack_prefix: str,
                  **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -96,19 +96,26 @@ class VotingApiStack(core.Stack):
                        value=api.url, export_name="{}-apiEndpointURL".format(construct_id))
 
 
-AWS_ACCOUNT_ID=os.getenv("CDK_DEFAULT_ACCOUNT")
-AWS_REGION=os.getenv("CDK_DEFAULT_REGION")
-STACK_NAME='votingapp'
-app=core.App()
+# AWS_ACCOUNT_ID=os.getenv("CDK_DEFAULT_ACCOUNT")
+# AWS_REGION=os.getenv("CDK_DEFAULT_REGION")
+# STACK_NAME='votingapp'
+# app=core.App()
 
-# Defining staging environment
-ENV_NAME="{}-staging".format(STACK_NAME)
-votingapi_staging_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
-core.Tags.of(votingapi_staging_stack).add('Name', STACK_NAME)
+# # Defining staging environment
+# ENV_NAME="{}-staging".format(STACK_NAME)
+# votingapi_staging_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
+# core.Tags.of(votingapi_staging_stack).add('Name', STACK_NAME)
 
-# Defining staging environment
-ENV_NAME="{}-prod".format(STACK_NAME)
-votingapi_prod_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
-core.Tags.of(votingapi_prod_stack).add('Name', STACK_NAME)
+# # Defining staging environment
+# ENV_NAME="{}-prod".format(STACK_NAME)
+# votingapi_prod_stack=VotingApiStack(app, "{}-api".format(ENV_NAME))
+# core.Tags.of(votingapi_prod_stack).add('Name', STACK_NAME)
+
+# app.synth()
+
+stack_prefix = 'serverless-vote'
+app = core.App()
+stack = VotingApiStack(app, stack_prefix, stack_prefix=stack_prefix)
+core.Tags.of(stack).add('Name', stack_prefix)
 
 app.synth()
