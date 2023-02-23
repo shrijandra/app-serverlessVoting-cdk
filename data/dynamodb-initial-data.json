@@ -1,0 +1,14 @@
+[
+    {
+        "VOTE_ID": "dab72313b249d2fb58eec505ecc9b67d",
+        "image": "/assets/nasi-lemak.webp",
+        "name": "Nasi Lemak",
+        "votes": 0
+       },
+       {
+        "VOTE_ID": "ad2af2578b4d55b5f78383024270f852",
+        "image": "/assets/beef-rendang.webp",
+        "name": "Beef Rendang",
+        "votes": 0
+       }
+]
