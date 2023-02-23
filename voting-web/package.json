@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Static site frontend interface to voting-api",
-  "main": "index.html",
+  
   "scripts": {
       "build":"npx parcel build ./index.html ./assets/*"
   },
