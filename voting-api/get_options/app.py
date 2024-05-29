@@ -23,7 +23,7 @@ logger.setLevel(logging.INFO)
 
 def list_data():
     data = []
-    dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-1')
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
     table = dynamodb.Table(os.getenv("TABLE_NAME"))
     scan_kwargs = {}
     done = False
